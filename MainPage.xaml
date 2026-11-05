@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:lab2.ViewModels"
+             x:Class="lab2.MainPage"
+             Title="Processing XML system : Dormitory">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- File selecting -->
+            <Frame BorderColor="Gray" CornerRadius="8" Padding="10">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Data files" FontAttributes="Bold" FontSize="16" />
+                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                        <Entry Text="{Binding XmlPath}" Placeholder="Path to XML file..." IsReadOnly="True" Grid.Column="0" />
+                        <Button Text="Choose XML" Command="{Binding SelectXmlFileCommand}" Grid.Column="1" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                        <Entry Text="{Binding XslPath}" Placeholder="Path to XSL file..." IsReadOnly="True" Grid.Column="0" />
+                        <Button Text="Choose XSL" Command="{Binding SelectXslFileCommand}" Grid.Column="1" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Search options -->
+            <Frame BorderColor="Gray" CornerRadius="8" Padding="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Search options and Strategy" FontAttributes="Bold" FontSize="16" />
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Entry Placeholder="Faculty" Text="{Binding SelectedFaculty}" Grid.Column="0" />
+                        <Entry Placeholder="Course" Text="{Binding SelectedCourse}" Keyboard="Numeric" Grid.Column="1" />
+                    </Grid>
+
+                    <Entry Placeholder="Keyword for the department" Text="{Binding DepartmentKeyword}" />
+
+                    <Label Text="Dynamic attribute selection from XML:" />
+                    <Picker ItemsSource="{Binding DynamicAttributes}" SelectedItem="{Binding SelectedDynamicAttribute}" Title="Choose existing attribute" />
+
+                    <Label Text="Choose Strategy:" />
+                    <Picker ItemsSource="{Binding Strategies}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStrategy}" />
+                    <Label Text="Generated query:" FontAttributes="Bold" />
+                    <Label Text="{Binding GeneratedQuery}" FontSize="12" TextColor="Gray" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Control buttons -->
+            <Grid ColumnDefinitions="*, *, *, *" ColumnSpacing="10">
+                <Button Text="Search" Command="{Binding SearchCommand}" BackgroundColor="#2196F3" TextColor="White" Grid.Column="0" />
+                <Button Text="Clear" Command="{Binding ClearCommand}" BackgroundColor="#FF9800" TextColor="White" Grid.Column="1" />
+                <Button Text="In HTML" Command="{Binding TransformToHtmlCommand}" BackgroundColor="#4CAF50" TextColor="White" Grid.Column="2" />
+                <Button Text="Exit" Command="{Binding ExitCommand}" BackgroundColor="#F44336" TextColor="White" Grid.Column="3" />
+            </Grid>
+
+            <!-- Result ouput field -->
+            <Label Text="Search results" FontAttributes="Bold" FontSize="16" Margin="0,10,0,0" />
+            <CollectionView ItemsSource="{Binding SearchResults}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" CornerRadius="5" Margin="0,5" Padding="10">
+                            <VerticalStackLayout Spacing="3">
+                                <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="15" />
+                                <Label Text="{Binding Faculty, StringFormat='Faculty: {0}'}" />
+                                <Label Text="{Binding Department, StringFormat='Department: {0}'}" />
+                                <Label Text="{Binding Course, StringFormat='Course: {0}'}" />
+                                <Label Text="{Binding RoomNumber, StringFormat='Room №: {0}'}" />
+                                <Label Text="{Binding CheckInDate, StringFormat='CheckIn: {0}'}" />
+                                <Label Text="{Binding CheckOutDate, StringFormat='CheckOut: {0}'}" />
+                                <Label Text="{Binding AttributesSummary, StringFormat='Node`s attributes: {0}'}" FontAttributes="Italic" TextColor="Gray" FontSize="12" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dormitory name="Dormitory #16" address="st. Butenko Zoi, 6">
+	<Student id="101" faculty="FCSC" course="2">
+		<FullName>Parkhomenko Olexiy Serhiyovich</FullName>
+		<Department>Department of program engineering</Department>
+		<Residence>
+			<Room number="412" checkIn="2024-09-01" checkOut="2028-06-30" />
+		</Residence>
+		<Contacts phone="+380971112233" email="o.parch@univ.edu.ua" />
+	</Student>
+
+	<Student id="102" faculty="MechMat" course="3" status="Preferential">
+		<FullName>Kovalenko Irina Mykolaivna</FullName>
+		<Department>Department of mathematic analysis</Department>
+		<Residence>
+			<Room number="305" checkIn="2023-09-01" checkOut="2027-06-30" />
+		</Residence>
+	</Student>
+
+	<Student id="103" faculty="ESIP" course="1" status="Foreigner" note="Pay for one year">
+		<FullName>Smith John</FullName>
+		<Department>Department of computer science</Department>
+		<Residence>
+			<Room number="210" checkIn="2025-09-01" checkOut="2026-06-30" />
+		</Residence>
+		<Contacts phone="+380639998877" />
+	</Student>
+</Dormitory>
