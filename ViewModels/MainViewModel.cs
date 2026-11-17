@@ -184,10 +184,15 @@ public class MainViewModel : BindableObject
             await Application.Current!.MainPage!.DisplayAlert("Error", "Enter the paths to XML and XSL files!", "OK");
             return;
         }
-
+        if (string.IsNullOrEmpty(GeneratedQuery))
+        {
+            await Application.Current!.MainPage!.DisplayAlert("Attention", "Perform a search first: HTML is built from the search results.", "OK");
+            return;
+        }
         try
         {
-            string htmlPath = XMLTransformService.TransformToHtml(XmlPath, XslPath);
+            var ids = SearchResults.Select(s => s.Id).ToList();
+            string htmlPath = XMLTransformService.TransformToHtml(XmlPath, XslPath, ids, GeneratedQuery);
             await Application.Current!.MainPage!.DisplayAlert("Success", $"HTML file generated successfully:\n{htmlPath}", "OK");
             await Launcher.Default.OpenAsync(new OpenFileRequest("View HTML", new ReadOnlyFile(htmlPath)));
         }

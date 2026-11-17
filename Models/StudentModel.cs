@@ -10,4 +10,5 @@ public class StudentModel
     public string CheckInDate { get; set; } = string.Empty;
     public string CheckOutDate { get; set; } = string.Empty;
     public string AttributesSummary { get; set; } = string.Empty;
+    public string Id { get; set; } = string.Empty;
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="html" indent="yes" encoding="UTF-8"/>
+	<xsl:param name="ids" select="''"/>
+	<xsl:param name="query" select="''"/>
 	<xsl:template match="/">
 		<html>
 			<head>
@@ -14,6 +16,9 @@
 			</head>
 			<body>
 				<h2>Information about residents' settlements</h2>
+				<p>
+					Search query: <xsl:value-of select="$query"/>
+				</p>
 				<table>
 					<tr>
 						<th>Full name</th>
@@ -23,7 +28,7 @@
 						<th>Room</th>
 						<th>Dates of stay</th>
 					</tr>
-					<xsl:for-each select="Dormitory/Student">
+					<xsl:for-each select="Dormitory/Student[contains($ids, concat(',', @id, ','))]">
 						<tr>
 							<td>
 								<xsl:value-of select="FullName"/>

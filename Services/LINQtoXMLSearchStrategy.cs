@@ -23,6 +23,7 @@ public class LinqToXmlSearchStrategy : IXMLSearchStrategy
                     let checkIn = (string?)room?.Attribute("checkIn") ?? ""
                     let checkOut = (string?)room?.Attribute("checkOut") ?? ""
                     let attrs = string.Join(", ", student.Attributes().Select(a => $"{a.Name}='{a.Value}'"))
+                    let id = (string?)student.Attribute("id") ?? ""
                     select new StudentModel
                     {
                         Faculty = faculty,
@@ -32,11 +33,12 @@ public class LinqToXmlSearchStrategy : IXMLSearchStrategy
                         RoomNumber = roomNum,
                         CheckInDate = checkIn,
                         CheckOutDate = checkOut,
-                        AttributesSummary = attrs
+                        AttributesSummary = attrs,
+                        Id = id
                     };
 
         return query.Where(s =>
-            (string.IsNullOrWhiteSpace(filter.Faculty) || s.Faculty.Equals(filter.Faculty, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(filter.Faculty) || s.Faculty.Contains(filter.Faculty, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrWhiteSpace(filter.Course) || s.Course.Equals(filter.Course, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrWhiteSpace(filter.DepartmentKeyword) || s.Department.Contains(filter.DepartmentKeyword, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrWhiteSpace(filter.SelectedAttributeValue) || s.AttributesSummary.Contains(filter.SelectedAttributeValue, StringComparison.OrdinalIgnoreCase))

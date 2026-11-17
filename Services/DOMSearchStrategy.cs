@@ -15,8 +15,10 @@ public class DomSearchStrategy : IXMLSearchStrategy
         doc.Load(xmlPath);
 
         var conditions = new List<string>();
+        const string up = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string lo = "abcdefghijklmnopqrstuvwxyz";
         if (!string.IsNullOrWhiteSpace(filter.Faculty))
-            conditions.Add($"@faculty='{filter.Faculty}'");
+            conditions.Add($"contains(translate(@faculty,'{up}','{lo}'),'{filter.Faculty.ToLowerInvariant()}')");
         if (!string.IsNullOrWhiteSpace(filter.Course))
             conditions.Add($"@course='{filter.Course}'");
         if (!string.IsNullOrWhiteSpace(filter.DepartmentKeyword))
@@ -37,7 +39,8 @@ public class DomSearchStrategy : IXMLSearchStrategy
                 Faculty = node.Attributes?["faculty"]?.Value ?? "",
                 Course = node.Attributes?["course"]?.Value ?? "",
                 FullName = node.SelectSingleNode("FullName")?.InnerText ?? "",
-                Department = node.SelectSingleNode("Department")?.InnerText ?? ""
+                Department = node.SelectSingleNode("Department")?.InnerText ?? "",
+                Id = node.Attributes?["id"]?.Value ?? "",
             };
 
             var roomNode = node.SelectSingleNode("Residence/Room");
@@ -68,7 +71,7 @@ public class DomSearchStrategy : IXMLSearchStrategy
 
     private static bool IsMatch(StudentModel s, SearchFilter filter)
     {
-        if (!string.IsNullOrWhiteSpace(filter.Faculty) && !s.Faculty.Equals(filter.Faculty, StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(filter.Faculty) && !s.Faculty.Contains(filter.Faculty, StringComparison.OrdinalIgnoreCase))
             return false;
         if (!string.IsNullOrWhiteSpace(filter.Course) && !s.Course.Equals(filter.Course, StringComparison.OrdinalIgnoreCase))
             return false;

@@ -15,7 +15,6 @@ public class SaxSearchStrategy : IXMLSearchStrategy
 
         StudentModel? currentStudent = null;
         string currentElement = string.Empty;
-        bool matchesFilter = false;
 
         while (reader.Read())
         {
@@ -26,6 +25,7 @@ public class SaxSearchStrategy : IXMLSearchStrategy
                     if (currentElement == "Student")
                     {
                         currentStudent = new StudentModel();
+                        currentStudent.Id = reader.GetAttribute("id") ?? "";
                         string faculty = reader.GetAttribute("faculty") ?? "";
                         string course = reader.GetAttribute("course") ?? "";
                         currentStudent.Faculty = faculty;
@@ -75,7 +75,7 @@ public class SaxSearchStrategy : IXMLSearchStrategy
 
     private static bool IsMatch(StudentModel s, SearchFilter filter)
     {
-        if (!string.IsNullOrWhiteSpace(filter.Faculty) && !s.Faculty.Equals(filter.Faculty, StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(filter.Faculty) && !s.Faculty.Contains(filter.Faculty, StringComparison.OrdinalIgnoreCase))
             return false;
         if (!string.IsNullOrWhiteSpace(filter.Course) && !s.Course.Equals(filter.Course, StringComparison.OrdinalIgnoreCase))
             return false;
